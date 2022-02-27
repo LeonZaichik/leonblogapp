@@ -6,6 +6,8 @@ Blog-like platform built with the MERN stack & Redux.
 * Post pagination
 * Post search feature
 * User profile options
+* JWT authorization
+* Registration email notification with SendGrid
 ## Usage
 **ES Modules in Node**
 
