@@ -26,6 +26,14 @@ const getPosts = asyncHandler(async (req, res) => {
   res.json({ posts, page, pages: Math.ceil(count / pageSize) });
 });
 
+// @desc       Get logged in user posts
+// @route      GET /api/posts/myposts
+// @access     Private
+const getMyPosts = asyncHandler(async (req, res) => {
+  const posts = await Post.find({user: req.user._id})
+  res.json(posts)
+})
+
 // @desc       Fetch single posts
 // @route      GET /api/posts/:id
 // @access     Public
@@ -135,6 +143,7 @@ const createPostReview = asyncHandler(async (req, res) => {
 export {
   getPosts,
   getPostById,
+  getMyPosts,
   createPost,
   updatePost,
   deletePost,

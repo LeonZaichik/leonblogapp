@@ -7,7 +7,8 @@ import {
   postCreateReducer,
   postUpdateReducer,
   postDeleteReducer,
-  postReviewCreateReducer
+  postReviewCreateReducer,
+  postMyListReducer,
 } from "./reducers/postReducers.js";
 import {
   userLoginReducer,
@@ -18,6 +19,7 @@ import {
 
 const reducer = combineReducers({
   postList: postListReducer,
+  postMyList: postMyListReducer,
   postDetails: postDetailsReducer,
   postCreate: postCreateReducer,
   postUpdate: postUpdateReducer,

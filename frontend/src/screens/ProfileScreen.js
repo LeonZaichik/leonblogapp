@@ -5,6 +5,9 @@ import { useDispatch, useSelector } from "react-redux";
 import Message from "../components/Message.js";
 import Loader from "../components/Loader.js";
 import { getUserDetails, updateUserProfile } from "../actions/userActions.js";
+import { listMyPosts } from "../actions/postActions.js";
+import Post from "../components/Post.js";
+import { USER_UPDATE_PROFILE_RESET } from "../constants/userConstants.js";
 
 const ProfileScreen = () => {
   const [name, setName] = useState("");
@@ -24,20 +27,25 @@ const ProfileScreen = () => {
   const userUpdateProfile = useSelector((state) => state.userUpdateProfile);
   const { success } = userUpdateProfile;
 
+  const postMyList = useSelector((state) => state.postMyList);
+  const { loading: loadingPosts, error: errorPosts, posts } = postMyList;
+
   const history = useNavigate();
 
   useEffect(() => {
     if (!userInfo) {
       history("/login");
     } else {
-      if (!user.name) {
+      if (!user || !user.name || success) {
+        dispatch({ type: USER_UPDATE_PROFILE_RESET });
         dispatch(getUserDetails("profile"));
+        dispatch(listMyPosts());
       } else {
         setName(user.name);
         setEmail(user.email);
       }
     }
-  }, [dispatch, history, userInfo, user]);
+  }, [dispatch, history, userInfo, user, success, posts]);
 
   const submitHandler = (e) => {
     e.preventDefault();
@@ -104,6 +112,19 @@ const ProfileScreen = () => {
       </Col>
       <Col md={9}>
         <h2>My posts</h2>
+        {loadingPosts ? (
+          <Loader />
+        ) : errorPosts ? (
+          <Message variant="danger">{errorPosts}</Message>
+        ) : (
+          <Row>
+            {posts.map((post) => (
+              <Col key={post._id} sm={12} md={6} lg={4} xl={3}>
+                <Post post={post} />
+              </Col>
+            ))}
+          </Row>
+        )}
       </Col>
     </Row>
   );

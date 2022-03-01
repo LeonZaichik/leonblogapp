@@ -53,7 +53,6 @@ const PostCreateScreen = () => {
 
       const { data } = await axios.post("/api/upload", formData, config);
       const correctData = data.replace(/\\/g, "/");
-      console.log(correctData);
 
       setImage(correctData);
       setUploading(false);

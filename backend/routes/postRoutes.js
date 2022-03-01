@@ -6,11 +6,13 @@ import {
   updatePost,
   createPost,
   deletePost,
-  createPostReview
+  createPostReview,
+  getMyPosts
 } from "../controllers/postController.js";
 import { protect } from "../middleware/authMiddleware.js";
 
 router.route("/").get(getPosts).post(protect, createPost);
+router.route('/myposts').get(protect, getMyPosts)
 router.route("/:id/reviews").post(protect, createPostReview);
 router
   .route("/:id")

@@ -71,7 +71,7 @@ const PostScreen = () => {
 
   return (
     <>
-      <Link className="btn btn-light my-3" to="/">
+      <Link className="btn btn-dark my-3" to="/">
         Go Back
       </Link>
       {loadingDelete && <Loader />}
@@ -82,7 +82,7 @@ const PostScreen = () => {
         <Message variant="danger">{error}</Message>
       ) : (
         <>
-        <Meta title={post.title} />
+          <Meta title={post.title} />
           <Row>
             <span className="fs-6">Author: {post.name}</span>
             <span className="fs-6">Published: {date.toDateString()}</span>
@@ -110,7 +110,7 @@ const PostScreen = () => {
               )}
             </Col>
 
-            <Col md={3}>
+            <Col md={6}>
               <ListGroup variant="flush">
                 <ListGroup.Item>
                   <h3>{post.title}</h3>

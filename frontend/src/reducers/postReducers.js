@@ -20,6 +20,9 @@ import {
   POST_CREATE_REVIEW_SUCCESS,
   POST_CREATE_REVIEW_FAIL,
   POST_CREATE_REVIEW_RESET,
+  POST_MY_LIST_REQUEST,
+  POST_MY_LIST_SUCCESS,
+  POST_MY_LIST_FAIL,
 } from "../constants/postConstans.js";
 
 export const postListReducer = (state = { posts: [] }, action) => {
@@ -36,6 +39,25 @@ export const postListReducer = (state = { posts: [] }, action) => {
       };
 
     case POST_LIST_FAIL:
+      return { loading: false, error: action.payload };
+
+    default:
+      return state;
+  }
+};
+
+export const postMyListReducer = (state = { posts: [] }, action) => {
+  switch (action.type) {
+    case POST_MY_LIST_REQUEST:
+      return { loading: true };
+
+    case POST_MY_LIST_SUCCESS:
+      return {
+        loading: false,
+        posts: action.payload,
+      };
+
+    case POST_MY_LIST_FAIL:
       return { loading: false, error: action.payload };
 
     default:

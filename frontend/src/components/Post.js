@@ -7,7 +7,7 @@ const Post = ({ post }) => {
   const date = new Date(post.createdAt);
 
   return (
-    <Card className="my-3 p-3 rounded">
+    <Card className="my-3 p-3 rounded" style={{height: '90%'}}>
       <Link to={`/post/${post._id}`}>
         <Card.Img src={post.image} variant="top" />
       </Link>
@@ -21,7 +21,8 @@ const Post = ({ post }) => {
 
         <Card.Text as="div">
           <Rating value={post.rating} text={`${post.numComments} reviews`} />
-          <span className="fs-6">Author: {post.name}</span><br/>
+          <span className="fs-6">Author: {post.name}</span>
+          <br />
           <span className="fs-6">Published: {date.toDateString()}</span>
         </Card.Text>
       </Card.Body>
