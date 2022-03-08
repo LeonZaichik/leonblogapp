@@ -10,6 +10,7 @@ import RegisterScreen from "./screens/RegisterScreen";
 import ProfileScreen from "./screens/ProfileScreen";
 import PostCreateScreen from "./screens/PostCreateScreen";
 import PostEditScreen from "./screens/PostEditScreen";
+import NotFoundScreen from "./screens/NotFoundScreen";
 
 const App = () => {
   return (
@@ -42,6 +43,7 @@ const App = () => {
             <Route path="/profile" element={<ProfileScreen />} />
             <Route path="/create" element={<PostCreateScreen />} />
             <Route path="/post/:id/edit" element={<PostEditScreen />} />
+            <Route path="*" element={<NotFoundScreen />} />
           </Routes>
         </Container>
       </main>
