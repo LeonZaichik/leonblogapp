@@ -7,7 +7,7 @@ import {
   createPost,
   deletePost,
   createPostReview,
-  getMyPosts
+  getMyPosts,
 } from "../controllers/postController.js";
 import { protect } from "../middleware/authMiddleware.js";
 

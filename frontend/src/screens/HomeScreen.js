@@ -9,10 +9,12 @@ import Message from "../components/Message";
 import Paginate from "../components/Paginate";
 import { useParams } from "react-router-dom";
 import Meta from "../components/Meta";
+import Category from "../components/Category";
 
 const HomeScreen = () => {
   const { keyword } = useParams();
   const { pageNumber } = useParams();
+  const { selectedCategory } = useParams();
 
   const dispatch = useDispatch();
 
@@ -20,8 +22,8 @@ const HomeScreen = () => {
   const { loading, error, posts, page, pages } = postList;
 
   useEffect(() => {
-    dispatch(listPosts(keyword, pageNumber || 1));
-  }, [dispatch, keyword, pageNumber]);
+    dispatch(listPosts(keyword, pageNumber || 1, selectedCategory));
+  }, [dispatch, keyword, pageNumber, selectedCategory]);
 
   return (
     <>
@@ -33,6 +35,8 @@ const HomeScreen = () => {
           Go Back
         </Link>
       )}
+      <Category />
+      <br />
       <h1>Latest Posts</h1>
       {loading ? (
         <Loader />
@@ -51,6 +55,7 @@ const HomeScreen = () => {
             pages={pages}
             page={page}
             keyword={keyword ? keyword : ""}
+            selectedCategory={selectedCategory ? selectedCategory : ''}
           />
         </>
       )}

@@ -1,6 +1,5 @@
 import asyncHandler from "express-async-handler";
 import Post from "../models/postModel.js";
-import User from "../models/userModel.js";
 
 // @desc       Fetch all posts
 // @route      GET /api/posts
@@ -8,6 +7,15 @@ import User from "../models/userModel.js";
 const getPosts = asyncHandler(async (req, res) => {
   const pageSize = 4;
   const page = Number(req.query.pageNumber) || 1;
+
+  const selectedCategory = req.query.selectedCategory
+    ? {
+        category: {
+          $regex: req.query.selectedCategory,
+          $options: "i",
+        },
+      }
+    : {};
 
   const keyword = req.query.keyword
     ? {
@@ -18,21 +26,22 @@ const getPosts = asyncHandler(async (req, res) => {
       }
     : {};
 
-  const count = await Post.countDocuments({ ...keyword });
-  const posts = await Post.find({ ...keyword })
+  const categories = await Post.distinct("category");
+  const count = await Post.countDocuments({ ...selectedCategory, ...keyword });
+  const posts = await Post.find({ ...selectedCategory, ...keyword })
     .limit(pageSize)
     .skip(pageSize * (page - 1));
 
-  res.json({ posts, page, pages: Math.ceil(count / pageSize) });
+  res.json({ posts, page, pages: Math.ceil(count / pageSize), categories });
 });
 
 // @desc       Get logged in user posts
 // @route      GET /api/posts/myposts
 // @access     Private
 const getMyPosts = asyncHandler(async (req, res) => {
-  const posts = await Post.find({user: req.user._id})
-  res.json(posts)
-})
+  const posts = await Post.find({ user: req.user._id });
+  res.json(posts);
+});
 
 // @desc       Fetch single posts
 // @route      GET /api/posts/:id
@@ -68,7 +77,7 @@ const updatePost = asyncHandler(async (req, res) => {
   const { title, description, category, image } = req.body;
 
   const post = await Post.findById(req.params.id);
-  const user = req.user._id
+  const user = req.user._id;
 
   if (post.user.toString() === user.toString()) {
     post.title = title;

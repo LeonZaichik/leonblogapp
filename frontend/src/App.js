@@ -21,11 +21,21 @@ const App = () => {
             <Route path="/" element={<HomeScreen />} exact />
             <Route path="/page/:pageNumber" element={<HomeScreen />} exact />
             <Route
-              path="/search/:keyword/page/:pageNumber"
+              path="/search/:keyword/page/:pageNumber/"
+              element={<HomeScreen />}
+              exact
+            />
+            <Route
+              path="/category/:selectedCategory/page/:pageNumber/"
               element={<HomeScreen />}
               exact
             />
             <Route path="/search/:keyword" element={<HomeScreen />} exact />
+            <Route
+              path="/category/:selectedCategory"
+              element={<HomeScreen />}
+              exact
+            />
             <Route path="/post/:id" element={<PostScreen />} />
             <Route path="/login" element={<LoginScreen />} />
             <Route path="/register" element={<RegisterScreen />} />

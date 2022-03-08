@@ -25,10 +25,13 @@ import {
   POST_MY_LIST_FAIL,
 } from "../constants/postConstans.js";
 
-export const postListReducer = (state = { posts: [] }, action) => {
+export const postListReducer = (
+  state = { posts: [], categories: [] },
+  action
+) => {
   switch (action.type) {
     case POST_LIST_REQUEST:
-      return { loading: true, posts: [] };
+      return { loading: true, posts: [], categories: [] };
 
     case POST_LIST_SUCCESS:
       return {
@@ -36,6 +39,7 @@ export const postListReducer = (state = { posts: [] }, action) => {
         posts: action.payload.posts,
         pages: action.payload.pages,
         page: action.payload.page,
+        categories: action.payload.categories,
       };
 
     case POST_LIST_FAIL:
