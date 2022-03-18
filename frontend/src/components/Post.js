@@ -7,7 +7,7 @@ const Post = ({ post }) => {
   const date = new Date(post.createdAt);
 
   return (
-    <Card className="my-3 p-3 rounded" style={{height: '90%'}}>
+    <Card className="my-3 p-3 rounded" style={{ height: "90%" }}>
       <Link to={`/post/${post._id}`}>
         <Card.Img src={post.image} variant="top" />
       </Link>

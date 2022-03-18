@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { Form, Button } from "react-bootstrap";
+import { Form, Button, Figure } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import Message from "../components/Message.js";
 import FormContainer from "../components/FormContainer.js";
@@ -15,6 +15,9 @@ const PostCreateScreen = () => {
   const [image, setImage] = useState("");
   const [category, setCategory] = useState("");
   const [uploading, setUploading] = useState(false);
+
+  const [imagePreview, setImagePreview] = useState(null);
+  const [imageData, setImageData] = useState(null);
 
   const dispatch = useDispatch();
 
@@ -43,6 +46,15 @@ const PostCreateScreen = () => {
     const formData = new FormData();
     formData.append("image", file);
     setUploading(true);
+
+    if (file) {
+      setImagePreview(file);
+      const reader = new FileReader();
+      reader.addEventListener("load", () => {
+        setImageData(reader.result);
+      });
+      reader.readAsDataURL(file);
+    }
 
     try {
       const config = {
@@ -81,14 +93,13 @@ const PostCreateScreen = () => {
             onChange={(e) => setImage(e.target.value)}
           ></Form.Control>
 
-          {/* <Form.Label>Image</Form.Label> */}
           <Form.Control
-            // id="image-file"
             label="Choose File"
             type="file"
-            // custom="true"
             onChange={uploadFileHandler}
           ></Form.Control>
+          <br />
+          <Figure.Image width={400} src={imageData} alt="" />
 
           {uploading && <Loader />}
         </Form.Group>
