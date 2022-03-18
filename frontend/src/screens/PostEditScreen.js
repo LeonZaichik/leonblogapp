@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useParams, Link, useNavigate } from "react-router-dom";
-import { Form, Button } from "react-bootstrap";
+import { Form, Button, Figure } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import Message from "../components/Message.js";
 import FormContainer from "../components/FormContainer.js";
@@ -21,6 +21,9 @@ const PostEditScreen = () => {
   const [image, setImage] = useState(post.image);
   const [category, setCategory] = useState(post.category);
   const [uploading, setUploading] = useState(false);
+
+  const [imagePreview, setImagePreview] = useState(null);
+  const [imageData, setImageData] = useState(null);
 
   const dispatch = useDispatch();
 
@@ -51,22 +54,21 @@ const PostEditScreen = () => {
       }
     }
   }, [dispatch, history, postId, post, successUpdate]);
-  //     dispatch({ type: POST_CREATE_RESET });
-
-  //     if (!userInfo) {
-  //       history("/login");
-  //     }
-
-  //     if (success) {
-  //       history(`/post/${createdPost._id}`);
-  //     }
-  //   }, [dispatch, history, userInfo, success, createdPost]);
 
   const uploadFileHandler = async (e) => {
     const file = e.target.files[0];
     const formData = new FormData();
     formData.append("image", file);
     setUploading(true);
+
+    if (file) {
+      setImagePreview(file);
+      const reader = new FileReader();
+      reader.addEventListener("load", () => {
+        setImageData(reader.result);
+      });
+      reader.readAsDataURL(file);
+    }
 
     try {
       const config = {
@@ -112,19 +114,20 @@ const PostEditScreen = () => {
           <Form.Group controlId="image">
             <Form.Label>Image</Form.Label>
             <Form.Control
+              className="d-none"
               type="text"
               value={image}
               onChange={(e) => setImage(e.target.value)}
             ></Form.Control>
 
-            {/* <Form.Label>Image</Form.Label> */}
             <Form.Control
-              // id="image-file"
               label="Choose File"
               type="file"
-              // custom="true"
               onChange={uploadFileHandler}
             ></Form.Control>
+            <br />
+
+            <Figure.Image width={400} src={imageData} alt="" />
 
             {uploading && <Loader />}
           </Form.Group>

@@ -88,6 +88,7 @@ const PostCreateScreen = () => {
         <Form.Group controlId="image">
           <Form.Label>Image</Form.Label>
           <Form.Control
+          className="d-none"
             type="text"
             value={image}
             onChange={(e) => setImage(e.target.value)}
