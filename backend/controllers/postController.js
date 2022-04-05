@@ -1,5 +1,6 @@
 import asyncHandler from "express-async-handler";
 import Post from "../models/postModel.js";
+import User from "../models/userModel.js";
 
 // @desc       Fetch all posts
 // @route      GET /api/posts
@@ -40,6 +41,18 @@ const getPosts = asyncHandler(async (req, res) => {
 // @access     Private
 const getMyPosts = asyncHandler(async (req, res) => {
   const posts = await Post.find({ user: req.user._id });
+  res.json(posts);
+});
+
+// @desc       Get logged in user favorite posts
+// @route      GET /api/posts/favoriteposts
+// @access     Private
+const getMyFavoritePosts = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.user._id);
+  const favoritePosts = await User.distinct("favoritePosts.favoritePost", {
+    _id: user._id,
+  });
+  const posts = await Post.find({ _id: { $in: favoritePosts } });
   res.json(posts);
 });
 
@@ -149,6 +162,60 @@ const createPostReview = asyncHandler(async (req, res) => {
   }
 });
 
+// @desc       Add post to favorite posts
+// @route      POST /api/posts/:id/favorites
+// @access     Private
+const addFavoritePost = asyncHandler(async (req, res) => {
+  const favoritePost = await Post.findById(req.params.id);
+  const user = await User.findById(req.user._id);
+
+  if (favoritePost) {
+    let result = false;
+
+    const alreadyFavorited = user.favoritePosts.find(
+      (f) => f.favoritePost.toString() === req.params.id.toString()
+    );
+
+    if (alreadyFavorited) {
+      res.status(400);
+      throw new Error("Post already favorited");
+    }
+
+    const data = {
+      favoritePost: req.params.id,
+    };
+
+    user.favoritePosts.push(data);
+
+    await user.save().then((result = true));
+    res
+      .status(201)
+      .json({ message: "Post added to favorites", favorited: result });
+  } else {
+    res.status(404);
+    throw new Error("User not found");
+  }
+});
+
+// @desc       Remove post from favorite posts
+// @route      DELETE /api/posts/:id/favorites
+// @access     Private
+const removeFavoritePost = asyncHandler(async (req, res) => {
+  const favoritePost = req.params.id;
+  const user = await User.findById(req.user._id);
+
+  if (favoritePost) {
+    await User.findByIdAndUpdate(
+      { _id: user._id },
+      { $pull: { favoritePosts: { favoritePost: favoritePost } } }
+    );
+    res.json({ message: "Post removed from favorites" });
+  } else {
+    res.status(404);
+    throw new Error("Favorite post not found");
+  }
+});
+
 export {
   getPosts,
   getPostById,
@@ -157,4 +224,7 @@ export {
   updatePost,
   deletePost,
   createPostReview,
+  addFavoritePost,
+  removeFavoritePost,
+  getMyFavoritePosts,
 };

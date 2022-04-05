@@ -23,6 +23,15 @@ import {
   POST_MY_LIST_REQUEST,
   POST_MY_LIST_SUCCESS,
   POST_MY_LIST_FAIL,
+  POST_ADD_TO_FAVORITE_REQUEST,
+  POST_ADD_TO_FAVORITE_SUCCESS,
+  POST_ADD_TO_FAVORITE_FAIL,
+  POST_REMOVE_FROM_FAVORITE_REQUEST,
+  POST_REMOVE_FROM_FAVORITE_SUCCESS,
+  POST_REMOVE_FROM_FAVORITE_FAIL,
+  POST_MY_FAVORITES_REQUEST,
+  POST_MY_FAVORITES_SUCCESS,
+  POST_MY_FAVORITES_FAIL,
 } from "../constants/postConstans.js";
 
 export const postListReducer = (
@@ -62,6 +71,25 @@ export const postMyListReducer = (state = { posts: [] }, action) => {
       };
 
     case POST_MY_LIST_FAIL:
+      return { loading: false, error: action.payload };
+
+    default:
+      return state;
+  }
+};
+
+export const postMyFavoritesReducer = (state = { posts: [] }, action) => {
+  switch (action.type) {
+    case POST_MY_FAVORITES_REQUEST:
+      return { loading: true };
+
+    case POST_MY_FAVORITES_SUCCESS:
+      return {
+        loading: false,
+        posts: action.payload,
+      };
+
+    case POST_MY_FAVORITES_FAIL:
       return { loading: false, error: action.payload };
 
     default:
@@ -155,6 +183,38 @@ export const postReviewCreateReducer = (state = {}, action) => {
 
     case POST_CREATE_REVIEW_RESET:
       return {};
+
+    default:
+      return state;
+  }
+};
+
+export const addToFavoritePostsReducer = (state = {}, action) => {
+  switch (action.type) {
+    case POST_ADD_TO_FAVORITE_REQUEST:
+      return { loading: true };
+
+    case POST_ADD_TO_FAVORITE_SUCCESS:
+      return { loading: false, success: true };
+
+    case POST_ADD_TO_FAVORITE_FAIL:
+      return { loading: false, error: action.payload };
+
+    default:
+      return state;
+  }
+};
+
+export const removeFromFavoritePostsReducer = (state = {}, action) => {
+  switch (action.type) {
+    case POST_REMOVE_FROM_FAVORITE_REQUEST:
+      return { loading: true };
+
+    case POST_REMOVE_FROM_FAVORITE_SUCCESS:
+      return { loading: false, success: true };
+
+    case POST_REMOVE_FROM_FAVORITE_FAIL:
+      return { loading: false, error: action.payload };
 
     default:
       return state;

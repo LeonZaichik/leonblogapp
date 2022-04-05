@@ -1,6 +1,16 @@
 import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
 
+const favoritePostsSchema = mongoose.Schema(
+  {
+    favoritePost: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: true,
+      ref: 'Post'
+    }
+  }
+)
+
 const userSchema = mongoose.Schema(
   {
     name: {
@@ -16,6 +26,7 @@ const userSchema = mongoose.Schema(
       type: String,
       required: true,
     },
+    favoritePosts: [favoritePostsSchema]
   },
   {
     timestamps: true,

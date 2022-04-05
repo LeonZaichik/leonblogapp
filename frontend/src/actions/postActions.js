@@ -22,6 +22,15 @@ import {
   POST_MY_LIST_REQUEST,
   POST_MY_LIST_SUCCESS,
   POST_MY_LIST_FAIL,
+  POST_ADD_TO_FAVORITE_REQUEST,
+  POST_ADD_TO_FAVORITE_SUCCESS,
+  POST_ADD_TO_FAVORITE_FAIL,
+  POST_REMOVE_FROM_FAVORITE_REQUEST,
+  POST_REMOVE_FROM_FAVORITE_SUCCESS,
+  POST_REMOVE_FROM_FAVORITE_FAIL,
+  POST_MY_FAVORITES_REQUEST,
+  POST_MY_FAVORITES_SUCCESS,
+  POST_MY_FAVORITES_FAIL,
 } from "../constants/postConstans.js";
 
 export const listPosts =
@@ -72,6 +81,37 @@ export const listMyPosts = () => async (dispatch, getState) => {
   } catch (error) {
     dispatch({
       type: POST_MY_LIST_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+export const listMyFavorites = () => async (dispatch, getState) => {
+  try {
+    dispatch({ type: POST_MY_FAVORITES_REQUEST });
+
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+
+    const { data } = await axios.get(`/api/posts/favoriteposts`, config);
+
+    dispatch({
+      type: POST_MY_FAVORITES_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: POST_MY_FAVORITES_FAIL,
       payload:
         error.response && error.response.data.message
           ? error.response.data.message
@@ -230,6 +270,73 @@ export const createPostReview =
     } catch (error) {
       dispatch({
         type: POST_CREATE_REVIEW_FAIL,
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
+      });
+    }
+  };
+
+export const addToFavoritePosts = (postId) => async (dispatch, getState) => {
+  try {
+    dispatch({
+      type: POST_ADD_TO_FAVORITE_REQUEST,
+    });
+
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+
+    await axios.post(`/api/posts/${postId}/favorites`, {}, config);
+
+    dispatch({
+      type: POST_ADD_TO_FAVORITE_SUCCESS,
+    });
+  } catch (error) {
+    dispatch({
+      type: POST_ADD_TO_FAVORITE_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+export const removeFromFavoritePosts =
+  (postId) => async (dispatch, getState) => {
+    try {
+      dispatch({
+        type: POST_REMOVE_FROM_FAVORITE_REQUEST,
+      });
+
+      const {
+        userLogin: { userInfo },
+      } = getState();
+
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      };
+
+      await axios.delete(`/api/posts/${postId}/favorites`, config);
+
+      dispatch({
+        type: POST_REMOVE_FROM_FAVORITE_SUCCESS,
+      });
+    } catch (error) {
+      dispatch({
+        type: POST_REMOVE_FROM_FAVORITE_FAIL,
         payload:
           error.response && error.response.data.message
             ? error.response.data.message

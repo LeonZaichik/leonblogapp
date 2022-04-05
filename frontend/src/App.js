@@ -11,12 +11,8 @@ import ProfileScreen from "./screens/ProfileScreen";
 import PostCreateScreen from "./screens/PostCreateScreen";
 import PostEditScreen from "./screens/PostEditScreen";
 import NotFoundScreen from "./screens/NotFoundScreen";
-import { useSelector } from "react-redux";
 
 const App = () => {
-  const postList = useSelector((state) => state.postList);
-  const { posts } = postList;
-
   return (
     <Router>
       <Header />

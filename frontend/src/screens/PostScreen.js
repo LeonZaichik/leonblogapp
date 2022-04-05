@@ -13,6 +13,7 @@ import Loader from "../components/Loader";
 import Message from "../components/Message";
 import { POST_CREATE_REVIEW_RESET } from "../constants/postConstans";
 import Meta from "../components/Meta";
+import Favorite from "../components/Favorite";
 
 const PostScreen = () => {
   const [rating, setRating] = useState(0);
@@ -93,23 +94,34 @@ const PostScreen = () => {
 
               {post.user === userInfo?._id && (
                 <LinkContainer to={`/post/${post._id}/edit`}>
-                  <Button className="btn btn-warning" type="button">
-                    Edit
+                  <Button variant="outline-secondary" size="sm" type="button">
+                    <i className="fa-solid fa-pen-to-square"> Edit</i>
                   </Button>
                 </LinkContainer>
               )}
 
               {post.user === userInfo?._id && (
-                <Button
-                  className="btn btn-danger ms-3 btn-sm"
-                  type="button"
-                  onClick={() => deleteHandler(post._id)}
-                >
-                  Delete
-                </Button>
+                <>
+                  <Button
+                    className="ms-3"
+                    variant="outline-danger"
+                    size="sm"
+                    type="button"
+                    onClick={() => deleteHandler(post._id)}
+                  >
+                    <i className="fa-solid fa-trash-can"> Delete</i>
+                  </Button>
+                </>
+              )}
+              {userInfo && (
+                <Favorite
+                  id={id}
+                  userInfo={userInfo}
+                  history={history}
+                  dispatch={dispatch}
+                />
               )}
             </Col>
-
             <Col md={6}>
               <ListGroup variant="flush">
                 <ListGroup.Item>

@@ -9,6 +9,9 @@ import {
   postDeleteReducer,
   postReviewCreateReducer,
   postMyListReducer,
+  addToFavoritePostsReducer,
+  removeFromFavoritePostsReducer,
+  postMyFavoritesReducer,
 } from "./reducers/postReducers.js";
 import {
   userLoginReducer,
@@ -20,6 +23,7 @@ import {
 const reducer = combineReducers({
   postList: postListReducer,
   postMyList: postMyListReducer,
+  postMyFavorites: postMyFavoritesReducer,
   postDetails: postDetailsReducer,
   postCreate: postCreateReducer,
   postUpdate: postUpdateReducer,
@@ -29,6 +33,8 @@ const reducer = combineReducers({
   userRegister: userRegisterReducer,
   userDetails: userDetailsReducer,
   userUpdateProfile: userUpdateProfileReducer,
+  addToFavorite: addToFavoritePostsReducer,
+  removeFromFavorite: removeFromFavoritePostsReducer,
 });
 
 const userInfoFromStorage = localStorage.getItem("userInfo")

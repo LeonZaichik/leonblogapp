@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Message from "../components/Message.js";
 import Loader from "../components/Loader.js";
 import { getUserDetails, updateUserProfile } from "../actions/userActions.js";
-import { listMyPosts } from "../actions/postActions.js";
+import { listMyFavorites, listMyPosts } from "../actions/postActions.js";
 import Post from "../components/Post.js";
 import { USER_UPDATE_PROFILE_RESET } from "../constants/userConstants.js";
 
@@ -30,6 +30,13 @@ const ProfileScreen = () => {
   const postMyList = useSelector((state) => state.postMyList);
   const { loading: loadingPosts, error: errorPosts, posts } = postMyList;
 
+  const postMyFavorites = useSelector((state) => state.postMyFavorites);
+  const {
+    loading: loadingFavorites,
+    error: errorFavorites,
+    posts: favoritePosts,
+  } = postMyFavorites;
+
   const history = useNavigate();
 
   useEffect(() => {
@@ -40,6 +47,7 @@ const ProfileScreen = () => {
         dispatch({ type: USER_UPDATE_PROFILE_RESET });
         dispatch(getUserDetails("profile"));
         dispatch(listMyPosts());
+        dispatch(listMyFavorites());
       } else {
         setName(user.name);
         setEmail(user.email);
@@ -111,7 +119,7 @@ const ProfileScreen = () => {
         </Form>
       </Col>
       <Col md={9}>
-        <h2>My posts</h2>
+        <h2>My Posts</h2>
         {loadingPosts ? (
           <Loader />
         ) : errorPosts ? (
@@ -119,6 +127,21 @@ const ProfileScreen = () => {
         ) : (
           <Row>
             {posts.map((post) => (
+              <Col key={post._id} sm={12} md={6} lg={4} xl={3}>
+                <Post post={post} />
+              </Col>
+            ))}
+          </Row>
+        )}
+
+        <h2>My Favorite Posts</h2>
+        {loadingFavorites ? (
+          <Loader />
+        ) : errorFavorites ? (
+          <Message variant="danger">{errorFavorites}</Message>
+        ) : (
+          <Row>
+            {favoritePosts.map((post) => (
               <Col key={post._id} sm={12} md={6} lg={4} xl={3}>
                 <Post post={post} />
               </Col>

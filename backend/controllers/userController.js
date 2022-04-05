@@ -2,6 +2,7 @@ import asyncHandler from "express-async-handler";
 import generateToken from "../utils/generateToken.js";
 import User from "../models/userModel.js";
 import sendWelcomeEmail from "../middleware/sendEmails.js";
+import Post from "../models/postModel.js";
 
 // @desc       Auth user & get token
 // @route      POST /api/users/login
@@ -68,6 +69,7 @@ const getUserProfile = asyncHandler(async (req, res) => {
       _id: user._id,
       name: user.name,
       email: user.email,
+      favoritePosts: user.favoritePosts,
     });
   } else {
     res.status(404);

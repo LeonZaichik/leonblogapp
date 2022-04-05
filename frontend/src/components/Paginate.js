@@ -3,16 +3,6 @@ import { Pagination } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
 
 const Paginate = ({ pages, page, keyword = "", selectedCategory = "" }) => {
-  // let to = '';
-
-  // if (keyword !== '') {
-  //   to = "`{/search/${keyword}/page/${x + 1}}`";
-  // } else if (selectedCategory !== '') {
-  //   to = "`{/category/${selectedCategory}/page/${x + 1}}`";
-  // } else {
-  //   to = "`{/page/${x + 1}}`";
-  // }
-
   return (
     pages > 1 && (
       <Pagination>
