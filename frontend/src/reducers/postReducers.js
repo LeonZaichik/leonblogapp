@@ -62,7 +62,7 @@ export const postListReducer = (
 export const postMyListReducer = (state = { posts: [] }, action) => {
   switch (action.type) {
     case POST_MY_LIST_REQUEST:
-      return { loading: true };
+      return { loading: true, ...state };
 
     case POST_MY_LIST_SUCCESS:
       return {
@@ -81,7 +81,7 @@ export const postMyListReducer = (state = { posts: [] }, action) => {
 export const postMyFavoritesReducer = (state = { posts: [] }, action) => {
   switch (action.type) {
     case POST_MY_FAVORITES_REQUEST:
-      return { loading: true };
+      return { loading: true, ...state };
 
     case POST_MY_FAVORITES_SUCCESS:
       return {

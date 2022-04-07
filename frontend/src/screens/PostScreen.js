@@ -21,6 +21,7 @@ const PostScreen = () => {
 
   const dispatch = useDispatch();
   const history = useNavigate();
+  const { id } = useParams();
 
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
@@ -38,8 +39,6 @@ const PostScreen = () => {
     error: errorDelete,
     success: successDelete,
   } = postDelete;
-
-  const { id } = useParams();
 
   useEffect(() => {
     if (successPostReview) {

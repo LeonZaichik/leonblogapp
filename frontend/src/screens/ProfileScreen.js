@@ -17,12 +17,13 @@ const ProfileScreen = () => {
   const [message, setMessage] = useState(null);
 
   const dispatch = useDispatch();
-
-  const userDetails = useSelector((state) => state.userDetails);
-  const { loading, error, user } = userDetails;
+  const history = useNavigate();
 
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
+
+  const userDetails = useSelector((state) => state.userDetails);
+  const { loading, error, user } = userDetails;
 
   const userUpdateProfile = useSelector((state) => state.userUpdateProfile);
   const { success } = userUpdateProfile;
@@ -37,8 +38,6 @@ const ProfileScreen = () => {
     posts: favoritePosts,
   } = postMyFavorites;
 
-  const history = useNavigate();
-
   useEffect(() => {
     if (!userInfo) {
       history("/login");
@@ -46,14 +45,14 @@ const ProfileScreen = () => {
       if (!user || !user.name || success) {
         dispatch({ type: USER_UPDATE_PROFILE_RESET });
         dispatch(getUserDetails("profile"));
+      } else {
         dispatch(listMyPosts());
         dispatch(listMyFavorites());
-      } else {
         setName(user.name);
         setEmail(user.email);
       }
     }
-  }, [dispatch, history, userInfo, user, success, posts]);
+  }, [dispatch, history, userInfo, user, success, posts, favoritePosts]);
 
   const submitHandler = (e) => {
     e.preventDefault();
